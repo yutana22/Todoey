@@ -10,10 +10,15 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let itemArray = ["item 1" , "item 2" , "item 3"]
+    var keyListArray = "TodoListArray"
+    var itemArray = ["item 1" , "item 2" , "item 3"]
+    var userDefaults = UserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = userDefaults.array(forKey: keyListArray) as? [String] {
+            itemArray = items
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -38,5 +43,24 @@ class TodoListViewController: UITableViewController {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    @IBAction func addItem(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add Item to Todoey ", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add New Item", style: .default) { (action) in
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+            self.userDefaults.set(self.itemArray, forKey: self.keyListArray)
+        }
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = " Create new Item here"
+            textField = alertTextField
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+ 
 }
 
