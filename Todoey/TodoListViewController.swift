@@ -99,14 +99,12 @@ class TodoListViewController: UITableViewController {
     }
     
     func loadData(){
-//        if let data = try? Data(contentsOf: self.dataPathFile!) {
-//            let deconder = PropertyListDecoder()
-//            do {
-//               itemArray = try deconder.decode([Item].self, from: data)
-//            } catch {
-//                print("Error decoding item array!")
-//            }
-//        }
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            itemArray =  try context.fetch(request)
+        } catch {
+            print("Fetch Error \(error)")
+        }
     }
  
 }
